@@ -1,0 +1,49 @@
+<aura:component access="global">
+  <aura:attribute name="fld" type="Object" required="true" access="global" />
+  <!-- types=sring,phone -->
+  <aura:if isTrue="{!v.fld.ftype == 'string' || v.fld.ftype == 'phone'}">
+    <div class="slds-form-element slds-is-required">
+      <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
+      <div class="slds-form-element__control">
+        <ui:inputText aura:id="{!v.fld.name + 'Search'}" class="slds-input" value="{!v.fld.value}" />
+      </div>
+    </div>
+  </aura:if>
+  <!-- picklist -->
+  <aura:if isTrue="{!v.fld.ftype == 'picklist'}">
+    <div class="slds-form-element slds-is-required">
+      <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
+      <div class="slds-form-element__control">
+        <ui:inputSelect aura:id="{!v.fld.name + 'Search'}" class="slds-input" value="{!v.fld.value}">
+          <ui:inputSelectOption text="" label="" />
+          <aura:iteration items="{!v.fld.options}" var="opt">
+            <ui:inputSelectOption text="{!opt.label}" label="{!opt.label}" />
+          </aura:iteration>
+        </ui:inputSelect>
+      </div>
+    </div>
+  </aura:if>
+  <!-- multipicklist -->
+  <aura:if isTrue="{!v.fld.ftype == 'multipicklist'}">
+  	<div class="slds-form-element slds-is-required">
+      <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
+      <div class="slds-form-element__control">
+        <ui:inputSelect aura:id="{!v.fld.name + 'Search'}" class="slds-input" value="{!v.fld.value}" multiple="true">
+          <ui:inputSelectOption text="" label="" />
+          <aura:iteration items="{!v.fld.options}" var="opt">
+            <ui:inputSelectOption text="{!opt.label}" label="{!opt.label}" />
+          </aura:iteration>
+        </ui:inputSelect>
+      </div>
+    </div>
+  </aura:if>
+  <!-- email -->
+  <aura:if isTrue="{!v.fld.ftype == 'email'}">
+  </aura:if>
+  <!-- boolean -->
+  <aura:if isTrue="{!v.fld.ftype == 'boolean'}">
+  </aura:if>
+  <!-- date -->
+  <aura:if isTrue="{!v.fld.ftype == 'date'}">
+  </aura:if>
+</aura:component>
