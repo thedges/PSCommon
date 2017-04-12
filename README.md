@@ -1,6 +1,6 @@
 # PSCommon
 
-Common set of components for PS* development
+Common set of components for PS* development.
 
 <a href="https://githubsfdeploy.herokuapp.com">
   <img alt="Deploy to Salesforce"
