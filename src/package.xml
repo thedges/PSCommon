@@ -4,6 +4,7 @@
         <members>PSDemoUtils</members>
         <members>PSField</members>
         <members>PSMetaUtils</members>
+        <members>PSResponse</members>
         <name>ApexClass</name>
     </types>
     <types>
