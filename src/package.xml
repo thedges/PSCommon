@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>PSCheckRecursive</members>
         <members>PSDemoUtils</members>
+        <members>PSEsriGeocodeResponse</members>
+        <members>PSEsriReverseGeocodeResponse</members>
         <members>PSField</members>
+        <members>PSGeoUtils</members>
         <members>PSMetaUtils</members>
         <members>PSResponse</members>
         <name>ApexClass</name>
