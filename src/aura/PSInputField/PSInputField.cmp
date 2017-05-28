@@ -25,7 +25,7 @@
   </aura:if>
   <!-- multipicklist -->
   <aura:if isTrue="{!v.fld.ftype == 'multipicklist'}">
-  	<div class="slds-form-element slds-is-required">
+    <div class="slds-form-element slds-is-required">
       <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
       <div class="slds-form-element__control">
         <ui:inputSelect aura:id="{!v.fld.name + 'Search'}" class="slds-input" value="{!v.fld.value}" multiple="true">
@@ -34,6 +34,17 @@
             <ui:inputSelectOption text="{!opt.label}" label="{!opt.label}" />
           </aura:iteration>
         </ui:inputSelect>
+      </div>
+    </div>
+  </aura:if>
+  <!-- multipicklist -->
+  <aura:if isTrue="{!v.fld.ftype == 'double'}">
+    <div class="slds-form-element slds-is-required">
+      <div class="slds-form-element__control">
+        <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
+        <div class="slds-form-element__control">
+          <ui:inputText aura:id="{!v.fld.name + 'Search'}" class="slds-input" value="{!v.fld.value}" />
+        </div>
       </div>
     </div>
   </aura:if>

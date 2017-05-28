@@ -31,6 +31,7 @@ public with sharing class PSGeoUtils
     req.setMethod('GET');
 
     // Send the request, and return a response
+    System.debug('reverseGeocodeEsri::Sending request...');
     HttpResponse res = h.send(req);
     System.debug('response=' + res.getBody());
     return res.getBody();

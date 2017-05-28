@@ -15,5 +15,9 @@
         <members>PSInputField</members>
         <name>AuraDefinitionBundle</name>
     </types>
+    <types>
+        <members>ArcGis</members>
+        <name>RemoteSiteSetting</name>
+    </types>
     <version>39.0</version>
 </Package>
