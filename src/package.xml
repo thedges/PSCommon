@@ -13,6 +13,8 @@
     </types>
     <types>
         <members>PSInputField</members>
+        <members>PSMultiSelect1</members>
+        <members>PSMultiSelect1_SelectChange</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>

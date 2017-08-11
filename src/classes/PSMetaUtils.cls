@@ -44,7 +44,7 @@ global class PSMetaUtils
       field.name = descField.getName();
 
       //if a field is a picklist, I want the values
-      if (field.ftype == 'picklist')
+      if (field.ftype == 'picklist' || field.ftype == 'multipicklist')
       {
         List<Schema.PicklistEntry> pickListValues = descField.getPickListValues();
         List<pickListValues> options = new List<picklistValues>();
