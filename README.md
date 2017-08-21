@@ -2,7 +2,7 @@
 
 Common set of components for PS* development.
 
-Dependency: Install the LightningStrike.io package first.
+Dependency: Install the [LightningStrike.io](https://github.com/thedges/Lightning-Strike) package first.
 
 <a href="https://githubsfdeploy.herokuapp.com">
   <img alt="Deploy to Salesforce"
