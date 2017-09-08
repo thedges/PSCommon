@@ -5,6 +5,7 @@ public with sharing class PSField {
 		label = null;
 		value = null;
 		options = new List<PicklistOption>();
+        wildcard = false;
 	}
 
     public String ftype {get; set;}
@@ -12,6 +13,7 @@ public with sharing class PSField {
     public String name {get; set;}
     public String value {get; set;}
     public List<PicklistOption> options {get; set;}
+    public Boolean wildcard {get; set;}
 
     public void addOption(String label, String value)
     {

@@ -13,7 +13,7 @@
     },
     
     getSelectedValues: function(component){
-        var options = component.get("v.options_");
+        var options = component.get("v.options");
         var values = [];
         options.forEach(function(element) {
             if (element.selected) {
@@ -24,7 +24,7 @@
     },
     
     getSelectedLabels: function(component){
-        var options = component.get("v.options_");
+        var options = component.get("v.options");
         var labels = [];
         options.forEach(function(element) {
             if (element.selected) {

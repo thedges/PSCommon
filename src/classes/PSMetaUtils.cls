@@ -35,9 +35,23 @@ global class PSMetaUtils
     }
     System.debug('keySet=' + keySet);
 
+    String fld;
+    String fieldKeyDef = null;
+
     for (String key : keySet)
     {
-      Schema.DescribeFieldResult descField = fieldMap.get(key).getDescribe();
+      fld = key;
+
+      if (key.contains('>'))
+      {
+         fld = key.substringBefore('>');
+         fieldKeyDef = key.substringAfter('>');
+      }
+
+      /////////////////////////////////////////
+      // get the core metadata def for field //
+      /////////////////////////////////////////
+      Schema.DescribeFieldResult descField = fieldMap.get(fld).getDescribe();
       PSField field = new PSField();
       field.ftype = descField.getType().name().toLowerCase();
       field.label = descField.getLabel();
@@ -52,6 +66,23 @@ global class PSMetaUtils
         {
           field.addOption(plv.getLabel(), plv.getValue());
         }
+      }
+
+      /////////////////////////////////////////
+      // check for field definition override //
+      /////////////////////////////////////////
+      if (fieldKeyDef != null)
+      {
+         System.debug('fieldKeyDef=' + fieldKeyDef);
+
+         List<PSSearchFieldDef__c> defList = [SELECT Field_Definition__c FROM PSSearchFieldDef__c WHERE Key__c = :fieldKeyDef];
+
+         if (defList != null && defList.size() == 1)
+         {
+           System.debug('def=' + defList[0].Field_Definition__c);
+           field = PSSearchFieldDef.parseFieldDef(defList[0].Field_Definition__c);
+           System.debug('fld=' + JSON.serializePretty(field));
+         }
       }
 
       fieldList.add(field);

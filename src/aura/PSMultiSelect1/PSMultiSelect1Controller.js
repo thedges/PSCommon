@@ -4,21 +4,6 @@
       //note, we get options and set options_
       //options_ is the private version and we use this from now on.
       //this is to allow us to sort the options array before rendering
-      var options = component.get("v.options");
-      options.sort(function compare(a,b) {
-                     if (a.value == 'All'){
-                       return -1;
-                     }
-                     else if (a.value < b.value){
-                       return -1;
-                     }
-                     if (a.value > b.value){
-                       return 1;
-                     }
-                     return 0;
-                   });
-
-      component.set("v.options_",options);
       var values = helper.getSelectedValues(component);
       helper.setInfoText(component,values);
     },
@@ -34,7 +19,7 @@
         var value = item.dataset.value;
         var selected = item.dataset.selected;
 
-        var options = component.get("v.options_");
+        var options = component.get("v.options");
 
         //shift key ADDS to the list (unless clicking on a previously selected item)
         //also, shift key does not close the dropdown (uses mouse out to do that)
@@ -55,7 +40,7 @@
           var mainDiv = component.find('main-div');
           $A.util.removeClass(mainDiv, 'slds-is-open');
         }
-        component.set("v.options_", options);
+        component.set("v.options", options);
         var values = helper.getSelectedValues(component);
         var labels = helper.getSelectedLabels(component);
         

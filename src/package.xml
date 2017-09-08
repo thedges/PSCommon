@@ -9,6 +9,7 @@
         <members>PSGeoUtils</members>
         <members>PSMetaUtils</members>
         <members>PSResponse</members>
+        <members>PSSearchFieldDef</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -16,6 +17,10 @@
         <members>PSMultiSelect1</members>
         <members>PSMultiSelect1_SelectChange</members>
         <name>AuraDefinitionBundle</name>
+    </types>
+    <types>
+        <members>PSSearchFieldDef__c</members>
+        <name>CustomObject</name>
     </types>
     <types>
         <members>ArcGis</members>

@@ -52,7 +52,7 @@
     <aura:if isTrue="{!v.fld.ftype == 'multipicklist'}">
         <div class="slds-form-element slds-is-required" style="vertical-align: top;">
             <c:strike_multiSelectPicklist label="{!v.fld.label + ':'}"
-                                          errorMessage="Invalid input" value="{!v.fld.value}">
+                                          errorMessage="Invalid input" value="{!v.fld.value}" placeholder="Select options...">
                 <aura:iteration items="{!v.fld.options}" var="opt">
                     <c:strike_option label="{!opt.label}" value="{!opt.label}"/>
                 </aura:iteration>
