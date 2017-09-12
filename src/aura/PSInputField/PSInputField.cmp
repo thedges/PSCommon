@@ -2,7 +2,7 @@
     <aura:attribute name="fld" type="Object" required="true" access="global" />
     <!-- types=sring,phone -->
     <aura:if isTrue="{!v.fld.ftype == 'string' || v.fld.ftype == 'phone'}">
-        <div class="slds-form-element slds-is-required">
+        <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
             <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
             <div class="slds-form-element__control">
                 <ui:inputText aura:id="{!v.fld.name + 'Search'}" class="slds-input" value="{!v.fld.value}" />
@@ -11,7 +11,7 @@
     </aura:if>
     <!-- picklist -->
     <aura:if isTrue="{!v.fld.ftype == 'picklist'}">
-        <div class="slds-form-element slds-is-required">
+        <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
             <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
             <div class="slds-form-element__control">
                 <ui:inputSelect aura:id="{!v.fld.name + 'Search'}" class="slds-input" value="{!v.fld.value}">
@@ -25,7 +25,7 @@
     </aura:if>
     <!-- multipicklist (standard Lightning multi-select) -->
     <aura:if isTrue="{!v.fld.ftype == 'multipicklist2'}">
-        <div class="slds-form-element slds-is-required" style="vertical-align: top;">
+        <div class="slds-form-element slds-is-required slds-p-bottom_xx-small" style="vertical-align: top;">
             <label class="slds-form-element__label" style="vertical-align: top; margin-top: 6px;" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
             <div class="slds-form-element__control">
                 <ui:inputSelect aura:id="{!v.fld.name + 'Search'}" class="slds-input multiple" value="{!v.fld.value}" multiple="true">
@@ -39,7 +39,7 @@
     </aura:if>
     <!-- multipicklist (INCOMPLETE: use checkbox option) -->
     <aura:if isTrue="{!v.fld.ftype == 'multipicklist2'}">
-        <div class="slds-form-element slds-is-required" style="vertical-align: top;">
+        <div class="slds-form-element slds-is-required slds-p-bottom_xx-small" style="vertical-align: top;">
             <label class="slds-form-element__label" style="vertical-align: top; margin-top: 6px;" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
             <div class="slds-form-element__control">
                 <aura:iteration items="{!v.fld.options}" var="opt">
@@ -50,7 +50,7 @@
     </aura:if>
     <!-- multipicklist (use LightningStrike.io multi-select component) -->
     <aura:if isTrue="{!v.fld.ftype == 'multipicklist'}">
-        <div class="slds-form-element slds-is-required" style="vertical-align: top;">
+        <div class="slds-form-element slds-is-required slds-p-bottom_xx-small" style="vertical-align: top;">
             <c:strike_multiSelectPicklist label="{!v.fld.label + ':'}"
                                           errorMessage="Invalid input" value="{!v.fld.value}" placeholder="Select options...">
                 <aura:iteration items="{!v.fld.options}" var="opt">
@@ -61,7 +61,7 @@
     </aura:if>
     <!-- multipicklist (use custom PSMultiSelect1 component) -->
     <aura:if isTrue="{!v.fld.ftype == 'multipicklist2'}">
-        <div class="slds-form-element slds-is-required" style="vertical-align: top;">
+        <div class="slds-form-element slds-is-required slds-p-bottom_xx-small" style="vertical-align: top;">
             <label class="slds-form-element__label" style="vertical-align: top; margin-top: 6px;" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
             <div class="slds-form-element__control">
                 <c:PSMultiSelect1 aura:id="my-multi-select" options="{!v.fld.options}" selectedItems="{!v.fld.value}" />
@@ -70,7 +70,7 @@
     </aura:if>
     <!-- number/double -->
     <aura:if isTrue="{!v.fld.ftype == 'double'}">
-        <div class="slds-form-element slds-is-required">
+        <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
             <div class="slds-form-element__control">
                 <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
                 <div class="slds-form-element__control">
