@@ -83,4 +83,27 @@ public class PSDemoUtils
       return '';
     }
   }
+
+  public static String readStaticResourceJsonFile(String name)
+  {
+    StaticResource sr = [SELECT Body FROM StaticResource WHERE Name = :name];
+    if (sr != null)
+    {
+      String replaceIllegal = sr.Body.toString().replaceAll('\n', '').replaceAll('\r', '');
+      return replaceIllegal;
+    }
+    return null;
+  }
+
+  public static String n2s(String val)
+  {
+    if (val == null)
+    {
+      return '';
+    }
+    else
+    {
+      return val;
+    }
+  }
 }
