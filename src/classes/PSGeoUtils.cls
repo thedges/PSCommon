@@ -1,8 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// This class utilizes the free ArcGIS service as defined here:
+// https://developers.arcgis.com/rest/geocode/api-reference/overview-world-geocoding-service.htm
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public with sharing class PSGeoUtils
 {
   public PSGeoUtils()
   {
-    
+
   }
 
   public static String reverseGeocodeGoogle(Decimal lat, Decimal lng)
@@ -27,7 +31,24 @@ public with sharing class PSGeoUtils
 
     // Instantiate a new HTTP request, specify the method (GET) as well as the endpoint
     HttpRequest req = new HttpRequest();
-    req.setEndpoint('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=' + lng + ',' + lat + '&f=json');
+    req.setEndpoint('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=' + lng.setScale(8) + ',' + lat.setScale(8) + '&f=json');
+    req.setMethod('GET');
+
+    // Send the request, and return a response
+    System.debug('reverseGeocodeEsri::Sending request...');
+    HttpResponse res = h.send(req);
+    System.debug('response=' + res.getBody());
+    return res.getBody();
+  }
+
+  public static String reverseGeocodeEsriValidAddress(Decimal lat, Decimal lng, Decimal distance)
+  {
+    System.debug('lat=' + lat + ' lng=' + lng);
+    Http h = new Http();
+
+    // Instantiate a new HTTP request, specify the method (GET) as well as the endpoint
+    HttpRequest req = new HttpRequest();
+    req.setEndpoint('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=' + lng.setScale(8) + ',' + lat.setScale(8) + '&f=json&featureTypes=PointAddress,StreetAddress,POI&distance=' + (distance * 1609.34).setScale(0) + '&outSR=4326');
     req.setMethod('GET');
 
     // Send the request, and return a response
@@ -198,7 +219,88 @@ public with sharing class PSGeoUtils
     }
   }
 
-  
+  public static PSEsriReverseGeocodeResponse genRandomAddress(Decimal baseLat, Decimal baseLng, Decimal radius)
+  {
+    PSEsriReverseGeocodeResponse resp;
+    Boolean find = true;
+
+    while (find)
+    {
+      Coord c = PSGeoUtils.genRandomRadiusCoord(baseLat, baseLng, radius);
+      String strResp = reverseGeocodeEsriValidAddress(c.lat, c.lng, radius);
+      System.debug('resp1=' + strResp);
+
+      if (!strResp.startsWith('{"error"'))
+      {
+        resp = (PSEsriReverseGeocodeResponse)JSON.deserialize(strResp, PSEsriReverseGeocodeResponse.class);
+        find = false;
+      }
+
+    }
+
+    System.debug('valid address=' + JSON.serializePretty(resp));
+    return resp;
+  }
+
+  public static Coord genRandomRadiusCoord(Decimal baseLat, Decimal baseLng, Decimal radius)
+  {
+    Coord c = new Coord();
+
+    Decimal angle = PSRandomizer.getRandomDecimal(360);
+    Decimal dist = PSRandomizer.getRandomDecimal(radius);
+
+    Decimal latMile = 0.01449275;
+    Decimal lngMile = 1 / (69.0 * Math.cos(baseLat * 3.14159 / 180.0));
+
+    Decimal distLng, distLat;
+
+    if (angle <= 90)
+    {
+      distLng = dist * Math.cos(angle * 3.14159 / 180.0);
+      distLat = dist * Math.sin(angle * 3.14159 / 180.0);
+
+      c.lat = baseLat + (distLat * latMile);
+      c.lng = baseLng + (distLng * lngMile);
+    }
+    else if (angle > 90 && angle <= 180)
+    {
+      angle = 180 - angle;
+      distLng = dist * Math.cos(angle * 3.14159 / 180.0);
+      distLat = dist * Math.sin(angle * 3.14159 / 180.0);
+
+      c.lat = baseLat + (distLat * latMile);
+      c.lng = baseLng - (distLng * lngMile);
+    }
+    else if (angle > 180 && angle <= 270)
+    {
+      angle = angle - 180;
+      distLng = dist * Math.cos(angle * 3.14159 / 180.0);
+      distLat = dist * Math.sin(angle * 3.14159 / 180.0);
+
+      c.lat = baseLat - (distLat * latMile);
+      c.lng = baseLng - (distLng * lngMile);
+    }
+    else
+    {
+      angle = 90 - (angle - 270);
+      distLng = dist * Math.cos(angle * 3.14159 / 180.0);
+      distLat = dist * Math.sin(angle * 3.14159 / 180.0);
+
+      c.lat = baseLat - (distLat * latMile);
+      c.lng = baseLng + (distLng * lngMile);
+    }
+
+    System.debug('coord=' + JSON.serializePretty(c));
+
+    return c;
+
+  }
+
+  public class Coord
+  {
+    public Decimal lat;
+    public Decimal lng;
+  }
 
 
 }

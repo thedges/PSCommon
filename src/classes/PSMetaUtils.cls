@@ -5,6 +5,16 @@ global class PSMetaUtils
 
   }
 
+  global static String getObjectMetaFieldDesc(String objtype, String field)
+  {
+    Schema.SObjectType targetType = Schema.getGlobalDescribe().get(objtype);
+    Schema.DescribeSObjectResult sobjResult = targetType.getDescribe();
+    Map<String, Schema.SObjectField> fieldMap = sobjResult.fields.getMap();
+
+    Schema.DescribeFieldResult descField = fieldMap.get(field).getDescribe();
+    return JSON.serializePretty(descField);
+  }
+
   ////////////////////////////////////////////////////////////////////////////////////
   // borrrowed and slightly modified this method from Shane McLaughlin for my needs //
   ////////////////////////////////////////////////////////////////////////////////////

@@ -8,6 +8,7 @@
         <members>PSField</members>
         <members>PSGeoUtils</members>
         <members>PSMetaUtils</members>
+        <members>PSRandomizer</members>
         <members>PSResponse</members>
         <members>PSSearchFieldDef</members>
         <name>ApexClass</name>

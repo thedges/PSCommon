@@ -18,6 +18,7 @@ public with sharing class PSEsriReverseGeocodeResponse {
         public String CountryCode;
         public String Match_addr;
         public String Loc_name;
+        public String Addr_type;
 	}
 
 	public class Location
