@@ -24,7 +24,7 @@ global class PSPrimitiveComparator implements PSObjectComparator{
         } else if(object1 instanceof String && object2 instanceof String){ 
             return compare((String)object1, (String)object2); 
         } else {
-            throw new IllegalArgumentException(
+            throw new PSIllegalArgumentException(
                 'Both arguments must be type Boolean, Date, Datetime, Decimal, Double, ID, Integer, Long, Time, or String');
         }
     }
