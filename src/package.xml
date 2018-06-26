@@ -1,16 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>PSAndCondition</members>
         <members>PSCheckRecursive</members>
+        <members>PSCondition</members>
+        <members>PSCondition</members>
+        <members>PSConditionGroup</members>
+        <members>PSConditionGroup</members>
+        <members>PSDateFormula</members>
+        <members>PSDateFormula</members>
+        <members>PSDecimalRange</members>
+        <members>PSDecimalRange</members>
+        <members>PSDecimalRangeComparator</members>
+        <members>PSDecimalRangeComparator</members>
         <members>PSDemoUtils</members>
         <members>PSEsriGeocodeResponse</members>
         <members>PSEsriReverseGeocodeResponse</members>
         <members>PSField</members>
+        <members>PSFieldCondition</members>
         <members>PSGeoUtils</members>
+        <members>PSISObjectComparator</members>
+        <members>PSIllegalArgumentException</members>
+        <members>PSIllegalStateException</members>
+        <members>PSIndexOutOfBoundsException</members>
+        <members>PSIntegerRange</members>
+        <members>PSInvalidCharacterStringException</members>
+        <members>PSLangUtils</members>
+        <members>PSLimitsUtility</members>
+        <members>PSLongRange</members>
         <members>PSMetaUtils</members>
+        <members>PSNotCondition</members>
+        <members>PSNumberFormatException</members>
+        <members>PSObjectComparator</members>
+        <members>PSOperator</members>
+        <members>PSOrCondition</members>
+        <members>PSOrderBy</members>
+        <members>PSPrimitiveComparator</members>
+        <members>PSRandomUtils</members>
         <members>PSRandomizer</members>
         <members>PSResponse</members>
+        <members>PSSObjectComparator</members>
+        <members>PSSObjectSortByNameComparator</members>
         <members>PSSearchFieldDef</members>
+        <members>PSSelectOptionComparator</members>
+        <members>PSSelectOptionWrapper</members>
+        <members>PSSetCondition</members>
+        <members>PSSoqlBuilder</members>
+        <members>PSSoqlBuilderHelper</members>
+        <members>PSSoqlField</members>
+        <members>PSSoqlOptions</members>
+        <members>PSSoqlUtils</members>
+        <members>PSSoqlable</members>
+        <members>PSStringBuffer</members>
+        <members>PSUnitOfTime</members>
         <name>ApexClass</name>
     </types>
     <types>

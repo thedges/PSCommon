@@ -37,11 +37,11 @@ global class PSMetaUtils
     Map<String, Schema.SObjectField> fieldMap = sobjResult.fields.getMap();
 
     // set list of fields to describe
-    Set<String> keySet = null;
+    List<String> keySet = null;
     keySet = PSDemoUtils.parseCSVString(filterFields);
     if (keySet == null)
     {
-      keySet = fieldMap.keySet();
+      keySet = new List<String>(fieldMap.keySet()); 
     }
     System.debug('keySet=' + keySet);
 
@@ -100,6 +100,127 @@ global class PSMetaUtils
 
     return JSON.serialize(fieldList);
   }
+    
+  @AuraEnabled
+  global static String getMetaFieldDesc3(String objtype, String filterFields)
+  {
+    System.debug('objtype=' + objtype);
+    System.debug('filterFields=' + filterFields);
+    filterFields = prepFilterFieldString(filterFields, '^');
+
+    List<PSField> fieldList = new List<PSField>();
+      
+    List<String> keyList = null;
+    keyList = PSDemoUtils.parseCSVString(filterFields);
+    
+    for (String key : keyList)
+    {
+      String fieldName = key;
+      String fieldOptions = null;
+      PSField psField;
+
+      // get field options if they exist
+      if (fieldName.contains('|'))
+      {
+         fieldName = key.substringBefore('|');
+         fieldOptions = key.substringAfter('|').replace('^',',');
+      }
+        
+      // traverse field parent references  
+      if (fieldName.contains('.'))
+      {
+         psField = getFieldDef(objtype, fieldName, fieldOptions);
+      }
+      else
+      {
+         psField = getFieldDef(objtype, fieldName, fieldOptions);
+      }
+      /*
+    Schema.SObjectType targetType = Schema.getGlobalDescribe().get(objtype);
+    if (targetType == null)
+    {
+      return '[{"message":"The requested resource does not exist","errorCode":"NOT_FOUND"}]';
+    }
+
+    Schema.DescribeSObjectResult sobjResult = targetType.getDescribe();
+    Map<String, Schema.SObjectField> fieldMap = sobjResult.fields.getMap();
+
+    // set list of fields to describe
+    List<String> keySet = null;
+    keySet = PSDemoUtils.parseCSVString(filterFields);
+    if (keySet == null)
+    {
+      keySet = new List<String>(fieldMap.keySet()); 
+    }
+    System.debug('keySet=' + keySet);
+
+    String fld;
+    String fieldKeyDef = null;
+
+    for (String key : keySet)
+    {
+      fld = key;
+
+      // get field options if they exist
+      if (fld.contains('|'))
+      {
+         fld = key.substringBefore('|');
+         fieldKeyDef = key.substringAfter('|');
+      }
+        
+      // traverse field parent references  
+      PSField field;
+      if (fld.contains('.'))
+      {
+         String origFieldName = fld;
+         List<String> tmpList = PSDemoUtils.parseDelimitedString(fld, '.');
+         for (String tmpStr : tmpList)
+         {
+             Map<String, Schema.SObjectField> tmpMap = Schema.getGlobalDescribe().get(objtype).getDescribe().fields.getMap();
+
+         }
+      }
+      else
+      {
+          field = convertField(fieldMap, fld, fieldKeyDef);
+      }
+*/
+
+      fieldList.add(psField);
+    }
+
+    return JSON.serialize(fieldList);
+  }
+  
+  private static PSField convertField(Map<String, Schema.SObjectField> fieldMap, String fld, String fieldKeyDef)
+  {
+      Schema.DescribeFieldResult descField = fieldMap.get(fld).getDescribe();
+      PSField field = new PSField();
+      field.ftype = descField.getType().name().toLowerCase();
+      field.label = descField.getLabel();
+      field.name = descField.getName();
+
+      //if a field is a picklist, I want the values
+      if (field.ftype == 'picklist' || field.ftype == 'multipicklist')
+      {
+        List<Schema.PicklistEntry> pickListValues = descField.getPickListValues();
+        List<pickListValues> options = new List<picklistValues>();
+        for (Schema.PicklistEntry plv : pickListValues)
+        {
+          field.addOption(plv.getLabel(), plv.getValue());
+        }
+      }
+
+      ////////////////////////////////////
+      // check for field config options //
+      ////////////////////////////////////
+      if (fieldKeyDef != null)
+      {
+         field.setConfigOptions((Map<String, String>)JSON.deserialize(fieldKeyDef, Map<String,String>.class));
+      } 
+      
+      return field;
+  }
 
   ////////////////////////////////////////////////////////////////////////////////////
   // borrrowed and slightly modified this method from Shane McLaughlin for my needs //
@@ -121,11 +242,11 @@ global class PSMetaUtils
     Map<String, Schema.SObjectField> fieldMap = sobjResult.fields.getMap();
 
     // set list of fields to describe
-    Set<String> keySet = null;
+    List<String> keySet = null;
     keySet = PSDemoUtils.parseCSVString(filterFields);
     if (keySet == null)
     {
-      keySet = fieldMap.keySet();
+      keySet = new List<String>(fieldMap.keySet()); 
     }
     System.debug('keySet=' + keySet);
 
@@ -182,40 +303,144 @@ global class PSMetaUtils
 
     return JSON.serialize(result);
   }
+    
+    public static PSField getFieldDef(String objtype, String fld, String fieldOptions)
+    {
+        System.debug('objtype=' + objtype);
+        System.debug('field=' + fld);
+        System.debug('fieldOptions=' + fieldOptions);
+        
+        Schema.SObjectType targetType = Schema.getGlobalDescribe().get(objtype);
+        if (targetType == null)
+        {
+             throw new PSIllegalArgumentException('Invalid object name [' + objtype + ']');
+        }
+        
+        PSField tmpField;
+        
+        if (fld.contains('.'))
+        {
+            String tmpStr = fld.substringBefore('.');
+            tmpField = getFieldDef(objtype, tmpStr, fieldOptions);
+            if (tmpField == null) return null;
+            tmpField = getFieldDef(tmpField.referenceTo, fld.substringAfter('.'), fieldOptions);
+            tmpField.name = fld;
+            //return tmpField;
+        }
+        else
+        {
+            
+            Schema.DescribeSObjectResult sobjResult = targetType.getDescribe();
+            Map<String, Schema.SObjectField> fieldMap = sobjResult.fields.getMap();
+            Schema.DescribeFieldResult descField;
+            if (fieldMap.containsKey(fld))
+            {
+                descField = fieldMap.get(fld).getDescribe();
+            }
+            else if (fieldMap.containsKey(fld + 'Id'))
+            {
+                descField = fieldMap.get(fld + 'Id').getDescribe();
+            }
+            else
+            {
+               throw new PSIllegalArgumentException('Invalid field name [' + fld + '] for object [' + objtype + ']');
+            }
+            
+            tmpField = new PSField();
+            tmpField.ftype = descField.getType().name().toLowerCase();
+            tmpField.label = descField.getLabel();
+            tmpField.name = descField.getName();
+            
+            //if a field is a picklist, I want the values
+            if (tmpField.ftype == 'picklist' || tmpField.ftype == 'multipicklist')
+            {
+                List<Schema.PicklistEntry> pickListValues = descField.getPickListValues();
+                List<pickListValues> options = new List<picklistValues>();
+                for (Schema.PicklistEntry plv : pickListValues)
+                {
+                    tmpField.addOption(plv.getLabel(), plv.getValue());
+                }
+            }
+            else if (tmpField.ftype == 'reference')
+            {
+                tmpField.referenceTo = descField.getReferenceTo()[0].getDescribe().getName();
+                tmpField.relationshipName = descField.getRelationshipName();
+            }
+            
+            if (fieldOptions != null)
+            {
+                Map<String, String> options = (Map<String, String>)JSON.deserialize(fieldOptions, Map<String,String>.class);
+                tmpField.setConfigOptions(options);
+                
+                if (options.containsKey('label'))
+                {
+                    tmpField.label = options.get('label');
+                }
+                
+                if (options.containsKey('value'))
+                {
+                    tmpField.value = options.get('value');
+                }
+                
+                if (options.containsKey('wildcard'))
+                {
+                    tmpField.wildcard = Boolean.valueOf(options.get('wildcard'));
+                }
+            } 
+        }
+        
+        
+        
+        return tmpField;
+        
+    }
+    
+    public static String prepFilterFieldString(String str, String replaceStr)
+    {
+        // ********************************************************************* //
+        // I'm not a regex person so doing this for now until I can figure out a //
+        // regex expression to do this                                           //
+        // ********************************************************************* //
+        if (str == null || str.length() ==0) return str;
+        
+        String[] chars = str.split('');
+        chars.remove(0);
 
-  @AuraEnabled
-  global static String getSingleFieldDesc(String objtype, String fld)
+        Boolean insideCurly = false;
+        for (Integer i=0; i<chars.size(); i++)
+        {
+            if (chars[i] == '{')
+            {
+                insideCurly = true;
+            }
+            else if (chars[i] == '}')
+            {
+                insideCurly = false;
+            }
+            else if (chars[i] == ',')
+            {
+               if (insideCurly)
+               {
+                   chars[i] = replaceStr;
+               }
+            }
+
+        }
+        
+        return String.join(chars, '');
+    }
+    
+    @AuraEnabled
+    global static String getSingleFieldDesc(String objtype, String fld)
   {
-    System.debug('objtype=' + objtype);
-    System.debug('field=' + fld);
-
-    Schema.SObjectType targetType = Schema.getGlobalDescribe().get(objtype);
-    if (targetType == null)
+    PSField field = getFieldDef(objtype, fld, null);
+    if (field == null)
     {
-      return '[{"message":"The requested resource does not exist","errorCode":"NOT_FOUND"}]';
+        return '[{"message":"The requested resource does not exist","errorCode":"NOT_FOUND"}]';
     }
-
-    Schema.DescribeSObjectResult sobjResult = targetType.getDescribe();
-    Map<String, Schema.SObjectField> fieldMap = sobjResult.fields.getMap();
-    Schema.DescribeFieldResult descField = fieldMap.get(fld).getDescribe();
-
-    PSField field = new PSField();
-    field.ftype = descField.getType().name().toLowerCase();
-    field.label = descField.getLabel();
-    field.name = descField.getName();
-
-    //if a field is a picklist, I want the values
-    if (field.ftype == 'picklist')
-    {
-      List<Schema.PicklistEntry> pickListValues = descField.getPickListValues();
-      List<pickListValues> options = new List<picklistValues>();
-      for (Schema.PicklistEntry plv : pickListValues)
-      {
-        field.addOption(plv.getLabel(), plv.getValue());
-      }
-    }
-
+    
     return JSON.serialize(field);
+
   }
 
   global class picklistValues

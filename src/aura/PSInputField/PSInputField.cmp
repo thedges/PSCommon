@@ -1,7 +1,7 @@
 <aura:component access="global">
     <aura:attribute name="fld" type="Object" required="true" access="global" />
-    <!-- types=sring,phone -->
-    <aura:if isTrue="{!v.fld.ftype == 'string' || v.fld.ftype == 'phone'}">
+    <!-- types=string -->
+    <aura:if isTrue="{!v.fld.ftype == 'string'}">
         <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
             <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
             <div class="slds-form-element__control">
@@ -81,11 +81,55 @@
     </aura:if>
     <!-- email -->
     <aura:if isTrue="{!v.fld.ftype == 'email'}">
+         <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
+            <div class="slds-form-element__control">
+                <div class="slds-form-element__control">
+                    <lightning:input aura:id="{!v.fld.name + 'Search'}" type="email" label="{!v.fld.label + ':'}" name="date" value="{!v.fld.value}"/>
+                </div>
+            </div>
+        </div>
     </aura:if>
+    <!-- phone -->
+    <aura:if isTrue="{!v.fld.ftype == 'phone'}">
+         <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
+            <div class="slds-form-element__control">
+                <div class="slds-form-element__control">
+                    <lightning:input aura:id="{!v.fld.name + 'Search'}" type="tel" label="{!v.fld.label + ':'}" name="date" value="{!v.fld.value}"/>
+                </div>
+            </div>
+        </div>
+    </aura:if>    
     <!-- boolean -->
     <aura:if isTrue="{!v.fld.ftype == 'boolean'}">
+        <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
+            <label class="slds-form-element__label" for="{!v.fld.name + 'Search'}">{!v.fld.label + ':'}</label>
+            <div class="slds-form-element__control">
+                <ui:inputSelect aura:id="{!v.fld.name + 'Search'}" class="slds-input" value="{!v.fld.value}">
+                     <ui:inputSelectOption text="" label="" />
+                     <ui:inputSelectOption text="true" label="true" />
+                     <ui:inputSelectOption text="false" label="false" />
+                </ui:inputSelect>
+            </div>
+        </div>
     </aura:if>
     <!-- date -->
     <aura:if isTrue="{!v.fld.ftype == 'date'}">
+         <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
+            <div class="slds-form-element__control">
+                <div class="slds-form-element__control">
+                    <lightning:input aura:id="{!v.fld.name + 'Search'}" type="date" label="{!v.fld.label + ':'}" name="date" value="{!v.fld.value}"/>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- datetime -->
+    <aura:if isTrue="{!v.fld.ftype == 'datetime'}">
+         <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
+            <div class="slds-form-element__control">
+                <div class="slds-form-element__control">
+                    <lightning:input aura:id="{!v.fld.name + 'Search'}" type="date" label="{!v.fld.label + ':'}" name="date" value="{!v.fld.value}"/>
+                </div>
+            </div>
+        </div>
     </aura:if>
 </aura:component>

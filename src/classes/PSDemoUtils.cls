@@ -61,12 +61,17 @@ public class PSDemoUtils
 
   }
 
-  public static Set<String> parseCSVString(String str)
+  public static List<String> parseCSVString(String str)
   {
-    Set<String> optList = new Set<String>();
-    for (String key : str.split(','))
+    return parseDelimitedString(str, ',');
+  }
+    
+  public static List<String> parseDelimitedString(String str, String delim)
+  {
+    List<String> optList = new List<String>();
+    for (String key : str.split(delim))
     {
-      optList.add(key.trim().tolowercase());
+      optList.add(key.trim());
     }
 
     return optList;
