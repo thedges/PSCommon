@@ -3832,13 +3832,13 @@ global class PSLangUtils {
                 }    
             }
         }
-        IntegerRange allowableRange = null;
+        PSIntegerRange allowableRange = null;
         if(chars == null){
-            allowableRange = new IntegerRange(32,127);
+            allowableRange = new PSIntegerRange(32,127);
         } else {
-            allowableRange = new IntegerRange(0,chars.length());
+            allowableRange = new PSIntegerRange(0,chars.length());
         }
-        if(!allowableRange.contains(new IntegerRange(startIndex,endIndex))){
+        if(!allowableRange.contains(new PSIntegerRange(startIndex,endIndex))){
             startIndex = allowableRange.min();
             endIndex = allowableRange.max();
         }    
