@@ -1,5 +1,5 @@
 global class PSLangUtils {
-  /* WordUtils methods */
+    /* WordUtils methods */
      
     global static String wrap(String str, Integer wrapLength) {
         return wrap(str, wrapLength, null, false);
@@ -290,7 +290,7 @@ global class PSLangUtils {
             return null;
         }
         if (maxWidth < 4) { 
-            throw new IllegalArgumentException('Minimum abbreviation width is 4');
+            throw new PSIllegalArgumentException('Minimum abbreviation width is 4');
         }
         if (str.length() <= maxWidth) {
             return str;
@@ -305,7 +305,7 @@ global class PSLangUtils {
             return str.substring(0, maxWidth - 3) + '...';
         }
         if (maxWidth < 7) {
-            throw new IllegalArgumentException('Minimum abbreviation width with offset is 7');
+            throw new PSIllegalArgumentException('Minimum abbreviation width with offset is 7');
         }
         if ((offset + (maxWidth - 3)) < str.length()) {
             return '...' + abbreviate(str.substring(offset), maxWidth - 3);
@@ -659,7 +659,7 @@ global class PSLangUtils {
     
     global static Integer getLevenshteinDistance(String s, String t) {
         if (s == null || t == null) {
-            throw new IllegalArgumentException('Strings must not be null');
+            throw new PSIllegalArgumentException('Strings must not be null');
         }
 
         /*
@@ -1119,7 +1119,7 @@ global class PSLangUtils {
             startIndex = endIndex;
             endIndex = temp;
         }
-        return new StringBuffer()
+        return new PSStringBuffer()
             .append(substring(str, 0, startIndex))
             .append(overlay)
             .append(substring(str, endIndex))
@@ -1285,7 +1285,7 @@ global class PSLangUtils {
         Integer increase = replacement.length() - replLength;
         increase = (increase < 0 ? 0 : increase);
         increase *= (max < 0 ? 16 : (max > 64 ? 64 : max));
-        StringBuffer buf = new StringBuffer(); 
+        PSStringBuffer buf = new PSStringBuffer(); 
         while (endIndex != -1) {
             buf.append(substring(text, startIndex, endIndex)).append(replacement);
             startIndex = endIndex + replLength;
@@ -1326,7 +1326,7 @@ global class PSLangUtils {
 
         // if recursing, this shouldnt be less than 0
         if (timeToLive < 0) {
-            throw new IllegalStateException('TimeToLive of ' + timeToLive + ' is less than 0: ' + text);
+            throw new PSIllegalStateException('TimeToLive of ' + timeToLive + ' is less than 0: ' + text);
         } 
 
         Integer searchLength = searchList.size();
@@ -1334,7 +1334,7 @@ global class PSLangUtils {
 
         // make sure lengths are ok, these need to be equal
         if (searchLength != replacementLength) {
-            throw new IllegalArgumentException('Search and Replace array lengths don\'t match: '
+            throw new PSIllegalArgumentException('Search and Replace array lengths don\'t match: '
                 + searchLength
                 + ' vs '
                 + replacementLength);
@@ -1380,7 +1380,7 @@ global class PSLangUtils {
 
         Integer start = 0;
 
-        StringBuffer buf = new StringBuffer();
+        PSStringBuffer buf = new PSStringBuffer();
 
         while (textIndex != -1) {
 
@@ -2123,9 +2123,9 @@ global class PSLangUtils {
     /* StringUtils methods */
 
     /* Character methods */
-   global static final IntegerRange UPPERCASE_ASCII_RANGE = new IntegerRange(65,90);
-    global static final IntegerRange LOWERCASE_ASCII_RANGE = new IntegerRange(97,122);
-    global static final IntegerRange DIGIT_ASCII_RANGE = new IntegerRange(48,57);
+   global static final PSIntegerRange UPPERCASE_ASCII_RANGE = new PSIntegerRange(65,90);
+    global static final PSIntegerRange LOWERCASE_ASCII_RANGE = new PSIntegerRange(97,122);
+    global static final PSIntegerRange DIGIT_ASCII_RANGE = new PSIntegerRange(48,57);
     
     //global static final Integer COMBINING_SPACING_MARK = 1;
     global static final Integer CONNECTOR_PUNCTUATION = 2;
@@ -2282,11 +2282,11 @@ global class PSLangUtils {
         
     global static void validateChar(String character){
         if(character != null && character.length() != 1){
-            throw new InvalidCharacterStringException('Invalid charcter string: ' + character);
+            throw new PSInvalidCharacterStringException('Invalid charcter string: ' + character);
         }
     }
 
-    private static Boolean inAsciiRange(String character, IntegerRange range){
+    private static Boolean inAsciiRange(String character, PSIntegerRange range){
         return range == null ? false : range.contains(toAscii(character));
     }
     
@@ -2517,10 +2517,10 @@ global class PSLangUtils {
     global static Long parseLong(String str, Integer radix){
         str = upperCase(trim(str));
         if(isBlank(str)){
-            throw new NumberFormatException();
+            throw new PSNumberFormatException();
         }
         if(radix < 2 || radix > 36){
-            throw new IllegalArgumentException('invalid radix parameter: ' + radix + '; radix must be >= 2 and <= 36');
+            throw new PSIllegalArgumentException('invalid radix parameter: ' + radix + '; radix must be >= 2 and <= 36');
         }
         Boolean isNegative = false;
         if(startsWith(str, '-')){
@@ -2529,7 +2529,7 @@ global class PSLangUtils {
         }
         String validChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.substring(0,radix);
         if(!containsOnly(str,validChars)){
-            throw new NumberFormatException('Invalid characters found in number: ' + str + ', with radix = ' + radix);
+            throw new PSNumberFormatException('Invalid characters found in number: ' + str + ', with radix = ' + radix);
         }
         final Integer LENGTH = length(str);
         Long returnValue = 0;
@@ -2582,7 +2582,7 @@ global class PSLangUtils {
             return null;
         }
         if(radix < 2 || radix > 36){
-            throw new IllegalArgumentException('invalid radix parameter: ' + radix + '; radix must be >= 2 and <= 36');
+            throw new PSIllegalArgumentException('invalid radix parameter: ' + radix + '; radix must be >= 2 and <= 36');
         }
         return (l<0 ? '-' : '') + toStringPrivate(Math.abs(l),radix,'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.substring(0,radix));
     }
@@ -3169,7 +3169,7 @@ global class PSLangUtils {
     global static List<Object> merg(List<Object> list1, List<Object> list2) {
         List<Object> returnList = new List<Object>();
         if(list1 != null && list2 != null && (list1.size()+list2.size()) > MAX_NUMBER_OF_ELEMENTS_IN_LIST){
-            throw new IllegalArgumentException('Lists cannot be merged because new list would be greater than maximum number of elements in a list: ' + MAX_NUMBER_OF_ELEMENTS_IN_LIST);
+            throw new PSIllegalArgumentException('Lists cannot be merged because new list would be greater than maximum number of elements in a list: ' + MAX_NUMBER_OF_ELEMENTS_IN_LIST);
         }
         if(isNotEmpty(list1)){
             for(Object elmt : list1){
@@ -3187,7 +3187,7 @@ global class PSLangUtils {
     
     global static List<SObject> merg(List<SObject> list1, List<SObject> list2) {
         if(list1 != null && list2 != null && (list1.size()+list2.size()) > MAX_NUMBER_OF_ELEMENTS_IN_LIST){
-            throw new IllegalArgumentException('Lists cannot be merged because new list would be greater than maximum number of elements in a list: ' + MAX_NUMBER_OF_ELEMENTS_IN_LIST);
+            throw new PSIllegalArgumentException('Lists cannot be merged because new list would be greater than maximum number of elements in a list: ' + MAX_NUMBER_OF_ELEMENTS_IN_LIST);
         }
         if(isEmpty(list1) && isEmpty(list2)){
             return null;
@@ -3465,14 +3465,14 @@ global class PSLangUtils {
         else if(value==falseValue)
             return false;
         else
-            throw new IllegalArgumentException();
+            throw new PSIllegalArgumentException();
     }
     
     
     global static Integer toInteger(Boolean bool)
     {
         if(bool==null)
-            throw new IllegalArgumentException();
+            throw new PSIllegalArgumentException();
         else
         {
             if(bool)
@@ -3528,7 +3528,7 @@ global class PSLangUtils {
     global static Boolean xor(Boolean[] boolArray)
     {
         if(boolArray==null || boolArray.size()==0)
-            throw new IllegalArgumentException();
+            throw new PSIllegalArgumentException();
         else
         {
             Boolean firstItem=boolArray[0];

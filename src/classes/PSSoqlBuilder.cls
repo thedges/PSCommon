@@ -33,13 +33,13 @@ global class PSSoqlBuilder {
         if(field == null){
             throw new PSIllegalArgumentException('null field');
         }
-        if(field instanceof String || field instanceof Field){
+        if(field instanceof String || field instanceof PSSoqlField){
             if(selectx == null){
                 selectx = new Set<Object>();
             }
             selectx.add(field);
         } else {
-            throw new PSIllegalArgumentException('Invalid field type.  A field must be either a String, Field, or PSSoqlBuilder.');
+            throw new PSIllegalArgumentException('Invalid field type.  A field must be either a String, PSSoqlField, or PSSoqlBuilder.');
         }
         return this;
     }  

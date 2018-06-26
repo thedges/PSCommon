@@ -46,7 +46,7 @@ global class PSSetCondition implements PSCondition{
 
     private PSSetCondition setOperation(PSOperator operator, List<Object> values){
         if(values == null || values.size() <= 0){
-            throw new IllegalArgumentException('illegal argument:  values is empty');
+            throw new PSIllegalArgumentException('illegal argument:  values is empty');
         }
         this.values = values;
         return setOperator(operator);
@@ -82,7 +82,7 @@ global class PSSetCondition implements PSCondition{
             + ' ' 
             + operatorToString(operator) 
             + ' (' 
-            + (builder == null ? PSLangUtils.joinArray(SoqlUtils.toLiteral(this.values),',') : builder.toSoql(options)) 
+            + (builder == null ? PSLangUtils.joinArray(PSSoqlUtils.toLiteral(this.values),',') : builder.toSoql(options)) 
             + ')'; 
     }
 

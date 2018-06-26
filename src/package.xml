@@ -29,6 +29,7 @@
         <members>PSLimitsUtility</members>
         <members>PSLongRange</members>
         <members>PSMetaUtils</members>
+        <members>PSNestableCondition</members>
         <members>PSNotCondition</members>
         <members>PSNumberFormatException</members>
         <members>PSObjectComparator</members>
