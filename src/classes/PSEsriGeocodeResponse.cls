@@ -16,7 +16,7 @@ public with sharing class PSEsriGeocodeResponse {
 	{
        public String address;
        public Location location;
-       public Integer score;
+       public Decimal score;
        public Extent extent;
 	}
 
