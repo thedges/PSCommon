@@ -62,10 +62,20 @@ global class PSMetaUtils
       // get the core metadata def for field //
       /////////////////////////////////////////
       Schema.DescribeFieldResult descField = fieldMap.get(fld).getDescribe();
+        System.debug('descField=' + JSON.serializePretty(descField));
       PSField field = new PSField();
-      field.ftype = descField.getType().name().toLowerCase();
+      
       field.label = descField.getLabel();
       field.name = descField.getName();
+        
+      if (descField.htmlFormatted)
+      {
+         field.ftype = 'richtext';
+      }
+      else
+      {
+        field.ftype = descField.getType().name().toLowerCase();
+      }
 
       //if a field is a picklist, I want the values
       if (field.ftype == 'picklist' || field.ftype == 'multipicklist')
