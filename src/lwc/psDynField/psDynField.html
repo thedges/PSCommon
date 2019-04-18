@@ -1,0 +1,76 @@
+<template>
+    <template if:true={isPicklist}>
+        <lightning-combobox name={fieldDef.name} label={fieldDef.label} placeholder=""
+            options={fieldDef.options} onchange={handleChange} value={value}>
+        </lightning-combobox>
+    </template>
+
+    <template if:true={isMultiPicklist}>
+    </template>
+
+    <template if:true={isBoolean}>
+        <!--
+        <lightning-combobox name={fieldDef.name} label={fieldDef.label}  placeholder=""
+            options={booleanOptions} onchange={handleChange} value={value}>
+        </lightning-combobox>
+        -->
+        <lightning-radio-group name={fieldDef.name} label={fieldDef.label} options={booleanOptions} value={value} onchange={handleChange} type="radio">
+        </lightning-radio-group>
+    </template>
+
+    <template if:true={isText}>
+        <lightning-input name={fieldDef.name} label={fieldDef.label} onblur={handleChange} value={value}>
+        </lightning-input>
+    </template>
+
+    <template if:true={isTextarea}>
+        <lightning-textarea name={fieldDef.name} label={fieldDef.label}  onblur={handleChange} value={value}></lightning-textarea>
+    </template>
+
+    <template if:true={isRichtext}>
+        <lightning-input-rich-text label={fieldDef.label} onblur={handleChange} value={value} label-visible></lightning-input-rich-text>
+    </template>
+
+    <template if:true={isDatetime}>
+        <lightning-input type="datetime" name={fieldDef.name} label={fieldDef.label} onblur={handleChange} value={value}></lightning-input>
+    </template>
+
+    <template if:true={isDate}>
+        <lightning-input type="date" name={fieldDef.name} label={fieldDef.label} onblur={handleChange} value={value}></lightning-input>
+    </template>
+
+    <template if:true={isCurrency}>
+        <lightning-input type="number" name={fieldDef.name} label={fieldDef.label} step="0.01" onblur={handleChange} value={value}>
+        </lightning-input>
+    </template>
+
+    <template if:true={isDouble}>
+        <lightning-input type="number" name={fieldDef.name} label={fieldDef.label} step="0.01" onblur={handleChange} value={value}>
+        </lightning-input>
+    </template>
+
+    <template if:true={isEmail}>
+        <lightning-input type="email" name={fieldDef.name} label={fieldDef.label} onblur={handleChange} value={value}>
+        </lightning-input>
+    </template>
+
+    <template if:true={isPercent}>
+        <lightning-input type="number" name={fieldDef.name} label={fieldDef.label}  step="0.01" onblur={handleChange} value={value}>
+        </lightning-input>
+    </template>
+
+    <template if:true={isPhone}>
+        <lightning-input type="tel" name={fieldDef.name} label={fieldDef.label}  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" onblur={handleChange} value={value} >
+        </lightning-input>
+    </template>
+
+    <template if:true={isReference}>
+    </template>
+
+    <template if:true={isUrl}>
+        <lightning-input type="url" name={fieldDef.name} label={fieldDef.label} onblur={handleChange} value={value}>
+        </lightning-input>
+    </template>
+
+
+</template>

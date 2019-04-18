@@ -67,8 +67,12 @@
         <name>CustomObject</name>
     </types>
     <types>
+        <members>psDynField</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
         <members>ArcGis</members>
         <name>RemoteSiteSetting</name>
     </types>
-    <version>39.0</version>
+    <version>45.0</version>
 </Package>
